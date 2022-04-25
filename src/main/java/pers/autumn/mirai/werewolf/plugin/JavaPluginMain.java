@@ -1,4 +1,4 @@
-package org.example.mirai.plugin;
+package pers.autumn.mirai.werewolf.plugin;
 
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription;

@@ -5,3 +5,6 @@
 /test/
 /out/
 /run/
+#mirai config paths
+/bots/
+/config/
