@@ -1,51 +1,39 @@
 package pers.autumn.mirai.werewolf.plugin;
 
+import net.mamoe.mirai.console.command.CommandManager;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
-import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
-import net.mamoe.mirai.event.Event;
-import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.GlobalEventChannel;
-import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.utils.MiraiLogger;
+import pers.autumn.mirai.werewolf.plugin.command.GameCommand;
+import pers.autumn.mirai.werewolf.plugin.game.GameConfig;
+import pers.autumn.mirai.werewolf.plugin.game.GameManager;
 
-
-/**
- * 使用 Java 请把
- * {@code /src/main/resources/META-INF.services/net.mamoe.mirai.console.plugin.jvm.JvmPlugin}
- * 文件内容改成 {@code org.example.mirai.plugin.JavaPluginMain} <br/>
- * 也就是当前主类全类名
- *
- * 使用 Java 可以把 kotlin 源集删除且不会对项目有影响
- *
- * 在 {@code settings.gradle.kts} 里改构建的插件名称、依赖库和插件版本
- *
- * 在该示例下的 {@link JvmPluginDescription} 修改插件名称，id 和版本等
- *
- * 可以使用 {@code src/test/kotlin/RunMirai.kt} 在 IDE 里直接调试，
- * 不用复制到 mirai-console-loader 或其他启动器中调试
- */
 
 public final class JavaPluginMain extends JavaPlugin {
     public static final JavaPluginMain INSTANCE = new JavaPluginMain();
+    private final static MiraiLogger LOGGER = JavaPluginMain.INSTANCE.getLogger();
+
     private JavaPluginMain() {
-        super(new JvmPluginDescriptionBuilder("org.example.mirai-example", "0.1.0")
-                .info("EG")
+        super(new JvmPluginDescriptionBuilder("pers.autumn.mirai.werewolf.plugin", "0.1.0")
+                .info("一个狼人杀游戏插件")
                 .build());
     }
 
     @Override
     public void onEnable() {
-        getLogger().info("日志");
-        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
-        eventChannel.subscribeAlways(GroupMessageEvent.class, g -> {
-            //监听群消息
-            getLogger().info(g.getMessage().contentToString());
+        LOGGER.debug("插件初始化开始");
+        this.reloadPluginConfig(GameConfig.INSTANCE);
 
-        });
-        eventChannel.subscribeAlways(FriendMessageEvent.class, f -> {
-            //监听好友消息
-            getLogger().info(f.getMessage().contentToString());
-        });
+        CommandManager.INSTANCE.registerCommand(GameCommand.CreateGameCommand.INSTANCE, true);
+        CommandManager.INSTANCE.registerCommand(GameCommand.StartGameCommand.INSTANCE, true);
+
+        LOGGER.info("狼人杀插件加载成功");
+    }
+
+    @Override
+    public void onDisable() {
+        LOGGER.info("狼人杀插件关闭中...");
+        GameManager.shutdownAllGames();
+        LOGGER.info("狼人杀插件关闭完成");
     }
 }

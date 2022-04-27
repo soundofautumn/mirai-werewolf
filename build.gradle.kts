@@ -6,7 +6,11 @@ plugins {
     id("net.mamoe.mirai-console") version "2.10.1"
 }
 
-group = "org.example"
+//dependencies{
+//    implementation( "org.slf4j:slf4j-log4j12:2.0.0-alpha6")
+//}
+
+group = "pers.autumn"
 version = "0.1.0"
 
 repositories {
