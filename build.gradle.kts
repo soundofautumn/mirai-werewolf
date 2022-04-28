@@ -4,11 +4,8 @@ plugins {
     kotlin("plugin.serialization") version kotlinVersion
 
     id("net.mamoe.mirai-console") version "2.10.1"
+    id("io.freefair.lombok") version "5.3.3.3"
 }
-
-//dependencies{
-//    implementation( "org.slf4j:slf4j-log4j12:2.0.0-alpha6")
-//}
 
 group = "pers.autumn"
 version = "0.1.0"

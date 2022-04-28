@@ -3,7 +3,6 @@ package pers.autumn.mirai.werewolf.plugin.game;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import pers.autumn.mirai.werewolf.plugin.JavaPluginMain;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +15,7 @@ import java.util.concurrent.*;
  * @date 2022/4/25 19:34
  */
 public class GameManager {
-    private final static MiraiLogger LOGGER = JavaPluginMain.INSTANCE.getLogger();
+    public final static MiraiLogger LOGGER = JavaPluginMain.INSTANCE.getLogger();
 
     //储存所有game manager的实例
     private final static HashMap<Class<? extends Game>, GameManager> gameManagers = new HashMap<>();
@@ -44,7 +43,7 @@ public class GameManager {
     public static GameManager getDefaultManager() {
         if (defaultGameType == null) {
             try {
-                defaultGameType = (Class<? extends Game>) Class.forName("pers.autumn.mirai.werewolf.plugin.game.WerewolfGame");
+                defaultGameType = (Class<? extends Game>) Class.forName("pers.autumn.mirai.werewolf.plugin.game.werewolf.WerewolfGame");
             } catch (ClassNotFoundException | ClassCastException e) {
                 throw new RuntimeException("cannot find default game");
             }
@@ -76,7 +75,8 @@ public class GameManager {
             return;
         }
         registerGame(group, game);
-        LOGGER.debug("游戏已创建");
+        LOGGER.debug(group.getName() + "的游戏创建成功");
+        group.sendMessage("游戏创建完成");
     }
 
     public Game getGameByGroup(Group group) {
@@ -93,6 +93,10 @@ public class GameManager {
     }
 
     private void startGame(Group group, @NotNull Game game) {
+        if (game.isRunning()) {
+            group.sendMessage("游戏已经在运行中");
+            return;
+        }
         try {
             GAME_RUNNING_SERVICE.execute(game::run);
         } catch (RejectedExecutionException e) {
@@ -108,7 +112,7 @@ public class GameManager {
         if (!isRegistered(group)) {
             RUNNING_GAMES.put(group, game);
         } else {
-            group.sendMessage("有一个游戏已经开始了");
+            group.sendMessage("有一个游戏已经创建了");
         }
     }
 
@@ -118,12 +122,24 @@ public class GameManager {
         }
     }
 
+    public void stopGame(Group group) {
+        if (!isRegistered(group)) {
+            group.sendMessage("没有在运行中的游戏");
+            return;
+        }
+        stopGame(getGameByGroup(group));
+    }
+
+    private void stopGame(@NotNull Game game) {
+        game.shutdown();
+    }
+
     public static void shutdownAllGames() {
         gameManagers.forEach((gameType, gameManager) -> gameManager.shutdown());
     }
 
     public void shutdown() {
-        RUNNING_GAMES.forEach((group, game) -> game.exit());
+        RUNNING_GAMES.forEach((group, game) -> game.shutdown());
         GAME_RUNNING_SERVICE.shutdown();
     }
 }

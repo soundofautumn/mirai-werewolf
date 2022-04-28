@@ -9,17 +9,15 @@ import pers.autumn.mirai.werewolf.plugin.JavaPluginMain;
  * @author SoundOfAutumn
  * @date 2022/4/25 14:26
  */
-public abstract class Game {
+public interface Game {
 
-    private Group gameGroup;
+    public boolean isRunning();
 
-    public Game(Group group) {
-        gameGroup = group;
-    }
+    public void run();
 
-    public abstract void run();
+    public void joinGame(Member member);
 
-    public abstract void prepare(Member member);
+    public void exitGame(Member member);
 
-    public abstract void exit();
+    public void shutdown();
 }

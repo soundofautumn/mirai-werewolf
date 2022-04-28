@@ -1,6 +1,5 @@
 package pers.autumn.mirai.werewolf.plugin.command;
 
-import net.mamoe.mirai.console.command.CommandSender;
 import net.mamoe.mirai.console.command.MemberCommandSender;
 import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +38,21 @@ public class GameCommand {
         @Handler
         public void handle(@NotNull MemberCommandSender sender) {
             sender.sendMessage("创建游戏中...");
+            GameManager.getDefaultManager().createGame(sender.getGroup());
+        }
+    }
+
+    public static final class StopGameCommand extends JSimpleCommand {
+        public static final StopGameCommand INSTANCE = new StopGameCommand();
+
+        public StopGameCommand() {
+            super(JavaPluginMain.INSTANCE, "停止游戏","stopGame");
+            setPermission(JavaPluginMain.INSTANCE.getParentPermission());
+        }
+
+        @Handler
+        public void handle(@NotNull MemberCommandSender sender) {
+            sender.sendMessage("停止游戏中...");
             GameManager.getDefaultManager().createGame(sender.getGroup());
         }
     }
