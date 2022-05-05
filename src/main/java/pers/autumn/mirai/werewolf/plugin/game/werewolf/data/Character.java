@@ -2,6 +2,9 @@ package pers.autumn.mirai.werewolf.plugin.game.werewolf.data;
 
 import net.mamoe.mirai.contact.Member;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author SoundOfAutumn
  * @date 2022/4/28 8:14

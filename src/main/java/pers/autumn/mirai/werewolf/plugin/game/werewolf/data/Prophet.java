@@ -1,6 +1,7 @@
 package pers.autumn.mirai.werewolf.plugin.game.werewolf.data;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.mamoe.mirai.contact.Member;
 
 /**
@@ -8,13 +9,19 @@ import net.mamoe.mirai.contact.Member;
  * @date 2022/4/28 8:21
  */
 @Data
-public class Prophet implements Character {
+@EqualsAndHashCode(callSuper = true)
+public class Prophet extends AbstractCharacter {
     Camp camp = Camp.God;
     String name = "预言家";
-    Member member;
 
-    public Prophet(Member member) {
-        this.member = member;
+    public Prophet(Member member, SharedGameData sharedGameData) {
+        super(member, sharedGameData);
     }
 
+    @Override
+    public void skillDuringTheNight() {
+        sendMessage("请问你今晚要查验的对象是");
+        final String name = sharedGameData.getCharacterMap().get(getResponseAsMember()).getName();
+        sendMessage("他的身份是：" + name);
+    }
 }

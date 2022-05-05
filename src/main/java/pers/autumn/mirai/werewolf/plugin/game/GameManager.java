@@ -127,11 +127,9 @@ public class GameManager {
             group.sendMessage("没有在运行中的游戏");
             return;
         }
-        stopGame(getGameByGroup(group));
-    }
-
-    private void stopGame(@NotNull Game game) {
-        game.shutdown();
+        getGameByGroup(group).shutdown();
+        unregisterGame(group);
+        System.gc();
     }
 
     public static void shutdownAllGames() {

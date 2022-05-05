@@ -26,6 +26,7 @@ public final class JavaPluginMain extends JavaPlugin {
 
         CommandManager.INSTANCE.registerCommand(GameCommand.CreateGameCommand.INSTANCE, true);
         CommandManager.INSTANCE.registerCommand(GameCommand.StartGameCommand.INSTANCE, true);
+        CommandManager.INSTANCE.registerCommand(GameCommand.StopGameCommand.INSTANCE, true);
 
         LOGGER.debug("插件初始化完成");
         LOGGER.info("狼人杀插件加载成功");

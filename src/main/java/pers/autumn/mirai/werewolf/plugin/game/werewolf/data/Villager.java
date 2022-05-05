@@ -1,6 +1,7 @@
 package pers.autumn.mirai.werewolf.plugin.game.werewolf.data;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.mamoe.mirai.contact.Member;
 
 /**
@@ -8,13 +9,12 @@ import net.mamoe.mirai.contact.Member;
  * @date 2022/4/28 8:03
  */
 @Data
-public class Villager implements Character {
+@EqualsAndHashCode(callSuper = true)
+public class Villager extends AbstractCharacter {
     Camp camp = Camp.CommonPeople;
     String name = "村民";
-    Member member;
 
-    public Villager(Member member) {
-        this.member = member;
+    public Villager(Member member, SharedGameData sharedGameData) {
+        super(member, sharedGameData);
     }
-
 }

@@ -53,7 +53,7 @@ public class GameCommand {
         @Handler
         public void handle(@NotNull MemberCommandSender sender) {
             sender.sendMessage("停止游戏中...");
-            GameManager.getDefaultManager().createGame(sender.getGroup());
+            GameManager.getDefaultManager().stopGame(sender.getGroup());
         }
     }
 }
