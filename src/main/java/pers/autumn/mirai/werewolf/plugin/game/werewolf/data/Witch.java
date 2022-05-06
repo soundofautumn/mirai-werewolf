@@ -1,6 +1,5 @@
 package pers.autumn.mirai.werewolf.plugin.game.werewolf.data;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import net.mamoe.mirai.contact.Member;
@@ -9,23 +8,20 @@ import net.mamoe.mirai.contact.Member;
  * @author SoundOfAutumn
  * @date 2022/4/28 8:26
  */
-@Data
 @EqualsAndHashCode(callSuper = true)
 public class Witch extends AbstractCharacter {
-    Camp camp = Camp.God;
-    String name = "女巫";
     boolean isPoisonUsed;
     boolean isAntidoteUsed;
 
     public Witch(Member member, SharedGameData sharedGameData) {
-        super(member, sharedGameData);
+        super(Camp.God, "女巫", member, sharedGameData);
     }
 
     @Override
     @SneakyThrows
     public void skillDuringTheNight() {
         sendMessage("请先等待狼人统一意见");
-        while (!sharedGameData.isWerewolfConsensus()){
+        while (!sharedGameData.isWerewolfConsensus()) {
             Thread.sleep(500);
         }
         if (!isAntidoteUsed) {

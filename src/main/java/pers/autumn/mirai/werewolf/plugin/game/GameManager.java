@@ -67,16 +67,19 @@ public class GameManager {
     }
 
     public void createGame(Group group) {
-        Game game;
-        try {
-            game = gameType.getConstructor(Group.class).newInstance(group);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            LOGGER.error(e);
+        if (isRegistered(group)) {
+            group.sendMessage("有一个游戏已经创建了");
             return;
         }
-        registerGame(group, game);
-        LOGGER.debug(group.getName() + "的游戏创建成功");
-        group.sendMessage("游戏创建完成");
+        group.sendMessage("创建游戏中...");
+        try {
+            Game game = gameType.getConstructor(Group.class).newInstance(group);
+            registerGame(group, game);
+            LOGGER.debug(group.getName() + "的游戏创建成功");
+            group.sendMessage("游戏创建完成");
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            LOGGER.error(e);
+        }
     }
 
     public Game getGameByGroup(Group group) {
@@ -89,7 +92,9 @@ public class GameManager {
             group.sendMessage("还未创建游戏，请先创建一个游戏");
             return;
         }
+        group.sendMessage("开始游戏中...");
         startGame(group, getGameByGroup(group));
+        group.sendMessage("游戏开始完成");
     }
 
     private void startGame(Group group, @NotNull Game game) {
@@ -108,7 +113,7 @@ public class GameManager {
         return RUNNING_GAMES.containsKey(group);
     }
 
-    public void registerGame(Group group, Game game) {
+    private void registerGame(Group group, Game game) {
         if (!isRegistered(group)) {
             RUNNING_GAMES.put(group, game);
         } else {
@@ -127,9 +132,11 @@ public class GameManager {
             group.sendMessage("没有在运行中的游戏");
             return;
         }
+        group.sendMessage("停止游戏中...");
         getGameByGroup(group).shutdown();
         unregisterGame(group);
         System.gc();
+        group.sendMessage("游戏已停止");
     }
 
     public static void shutdownAllGames() {

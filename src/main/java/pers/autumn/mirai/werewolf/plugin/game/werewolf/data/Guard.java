@@ -1,6 +1,5 @@
 package pers.autumn.mirai.werewolf.plugin.game.werewolf.data;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.mamoe.mirai.contact.Member;
 
@@ -8,14 +7,11 @@ import net.mamoe.mirai.contact.Member;
  * @author SoundOfAutumn
  * @date 2022/4/28 10:28
  */
-@Data
 @EqualsAndHashCode(callSuper = true)
-public class Guard extends AbstractCharacter{
-    Camp camp = Camp.God;
-    String name = "守卫";
+public class Guard extends AbstractCharacter {
 
     public Guard(Member member, SharedGameData sharedGameData) {
-        super(member, sharedGameData);
+        super(Camp.God, "守卫", member, sharedGameData);
     }
 
     @Override

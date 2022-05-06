@@ -133,7 +133,7 @@ public class WerewolfGame implements Game {
                     new ThreadPoolExecutor(1, maxPlayers, 10, TimeUnit.MINUTES, new SynchronousQueue<>(), Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
             characterMap.forEach((member, character) -> service.execute(character::skillDuringTheNight));
             service.shutdown();
-            while (!service.isShutdown()) Thread.sleep(500);
+            while (!service.awaitTermination(30,TimeUnit.SECONDS));
             sharedGameData.calculate();
             /* --------------------------------白天开始---------------------------------------------- */
             sendMessage("天亮了");
@@ -387,5 +387,6 @@ public class WerewolfGame implements Game {
         voteCount = 0;
         playerList.clear();
         sharedGameData.clear();
+        sendMessage("游戏已退出");
     }
 }

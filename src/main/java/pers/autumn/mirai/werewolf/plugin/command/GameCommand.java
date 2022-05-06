@@ -22,7 +22,6 @@ public class GameCommand {
 
         @Handler
         public void handle(@NotNull MemberCommandSender sender) {
-            sender.sendMessage("开始游戏中...");
             GameManager.getDefaultManager().startGame(sender.getGroup());
         }
     }
@@ -37,7 +36,6 @@ public class GameCommand {
 
         @Handler
         public void handle(@NotNull MemberCommandSender sender) {
-            sender.sendMessage("创建游戏中...");
             GameManager.getDefaultManager().createGame(sender.getGroup());
         }
     }
@@ -52,7 +50,6 @@ public class GameCommand {
 
         @Handler
         public void handle(@NotNull MemberCommandSender sender) {
-            sender.sendMessage("停止游戏中...");
             GameManager.getDefaultManager().stopGame(sender.getGroup());
         }
     }

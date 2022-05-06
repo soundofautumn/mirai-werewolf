@@ -2,7 +2,6 @@ package pers.autumn.mirai.werewolf.plugin.game.werewolf.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.event.Event;
@@ -20,11 +19,12 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date 2022/4/29 19:54
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public abstract class AbstractCharacter implements Character {
-    Member member;
-    SharedGameData sharedGameData;
+    private final Camp camp;
+    private final String name;
+    private final Member member;
+    protected final SharedGameData sharedGameData;
     final EventChannel<Event> userListener = GlobalEventChannel.INSTANCE
             .filter(event -> event instanceof UserMessageEvent && ((UserMessageEvent) event).getSubject().getId() == member.getId());
 
@@ -68,5 +68,15 @@ public abstract class AbstractCharacter implements Character {
 
     void sendMessage(String message) {
         member.sendMessage(message);
+    }
+
+    @Override
+    public Camp getCamp() {
+        return camp;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
