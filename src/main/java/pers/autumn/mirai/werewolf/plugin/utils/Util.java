@@ -3,6 +3,7 @@ package pers.autumn.mirai.werewolf.plugin.utils;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
 import net.mamoe.mirai.contact.NormalMember;
+import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,13 @@ public class Util {
             throw new NullPointerException();
         }
         return g1.getId() == g2.getId();
+    }
+
+    public static boolean isEqualUsers(User u1, User u2) {
+        if (u1 == null || u2 == null) {
+            throw new NullPointerException();
+        }
+        return u1.getId() == u2.getId();
     }
 
     @Nullable
